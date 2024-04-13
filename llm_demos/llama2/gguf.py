@@ -2,6 +2,8 @@ from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.prompts import PromptTemplate
 from langchain_community.llms import LlamaCpp
+from llm_demos.llama2.imp_prompt import importance_prompt
+import re
 
 # Callbacks support token-wise streaming
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
@@ -21,11 +23,11 @@ llm = LlamaCpp(
 # You can use this in any langchain prompt in place of your existing llm
 
 def importance_f(query, obs):
-    # Ensure the prompt is clear about only returning a number
-    importance = importance_prompt
-    
-    #add examples, describe query and prior , description first, format, examples. (really nice or mean)
-    
-    # Invoke the model with the formatted prompt
+    importance = importance_prompt.replace("$OBSERVATION$", obs)
+    importance = importance.replace("$QUERY$", query)
     response = llm.invoke(importance)
-    return response
+    number = re.findall(r'I: ([+-]?[0-9]*\.?[0-9]+)', response)
+    if number:
+        return float(number[0])
+    else:
+        return 0
