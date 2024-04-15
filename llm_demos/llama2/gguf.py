@@ -15,19 +15,21 @@ llm = LlamaCpp(
     callback_manager=callback_manager,
     verbose=True,
     n_ctx=2048,
+    max_new_tokens = 16,
 #    f16_kv=True,
-    n_gpu_layers=41,
+    n_gpu_layers=41,        
 )
+
 
 
 # You can use this in any langchain prompt in place of your existing llm
 
 def importance_f(query, obs):
-    importance = importance_prompt.replace("$OBSERVATION$", obs)
-    importance = importance.replace("$QUERY$", query)
-    response = llm.invoke(importance)
-    number = re.findall(r'I: ([+-]?[0-9]*\.?[0-9]+)', response)
-    if number:
-        return float(number[0])
-    else:
-        return 0
+    importance_str = importance_prompt.replace("$OBSERVATION$", obs)
+    importance_str = importance_str.replace("$QUERY$", query)
+    while True:
+        response = llm.invoke(importance_str)
+        number = re.findall(r'I: ([+-]?[0-9]*\.?[0-9]+)', response)
+        if number and 10 >= float(number[0]) >= 0 : # 
+            importance = float(number[0])/10
+            return importance

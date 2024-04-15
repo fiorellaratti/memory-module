@@ -19,7 +19,7 @@ Q: {[6] Question: Part 1: What happens next? What is behind the door, the lady o
 I: 9.5
 Rationale: By the index and the Pseudonym you can assume this two mesages were sent in order by the same person and therefore "Her lover would die and never love another." its a continuation of "I loved the addition of " which makes knowing the prior really important for the query.
 ...
-Now, give the following Observation O and Query an importance value based on the definitions and examples above.
+Now, give the following Observation O and Query an importance value based on the definitions and examples above. Please only output the importance in the form of "I: (importance value)" if you want to get points. If you do any other way, you will not get any points.
 
 O: $OBSERVATION$
 Q: $QUERY$
