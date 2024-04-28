@@ -1,21 +1,15 @@
-classification_prompt = '''Take on the role of a multiple classification task for a given input context and message. 
+class_prompt = '''Take on the role of a multiple classification task for a given input context and message. 
 
 Given: a topic, context and message. The topic is what the students are discussing. The context are important messages related to the message you will be classifying. The message is the one you need to classify, it will have the format of {[Index] Pseudonym: "Message"}
-Task: give the message an appropriate Intent Class, Uptake Class, and Question Type Class.
+Task: give the message an appropriate Class.
 
-Description: You will be classifying a message from students discussing a certain topic. Each message can have multiple classifications; 
- - multiple from Intent Classes, 
- - one from Uptake Classes, 
- - one from Question Type
+Description: You will be classifying a message from students discussing a certain topic. Each message can have only one classification.
 
-Example Output:
-
+Example Output Format:
  ```json
 {
-    "intent": [...list of intent classifications], 
-    "uptake": "...uptake classification", 
-    "question_type": "..question type classification",
-    "rationale": "Reason for intent, uptake and question_type classifications"
+    "class": "...classification", 
+    "rationale": "Reason for classification"
 }
  ```
 
@@ -60,47 +54,7 @@ I mean I think it states that the king does love the daughter at  some point tho
 - Definition: Non-sequitur or anything that doesn’t fit into any other category.
 - Example Usage: s60e 6f 0y 2eys 6n3y d6 n40bers.
 
-# Uptake types:
-
-## Affirm:
-- Definition: The action or process of affirming something or being affirmed, showing agreement.
-- Example Usage: That’s a good point. I agree.
-
-## Elaborate:
-- Definition: Provide additional examples, detail or explanation. These are statement, NOT questions or commands.
-- Example Usage: Another example of this….
-
-## Clarify:
-- Definition: Ask questions or make commands, to improve comprehension.
-- Example Usage: So you are saying…? Do you mean…?.
-
-## Disagree:
-- Definition: To express a differing opinion.
-- Example Usage: I disagree. This means something different than what you stated.
-
-## Prompt:
-- Definition: Refers back and responds to a previous discussion or question.
-- Example Usage: Going back to your previous question….
-
-## Filler:
-- Definition: Acknowledges the previous person’s position without adding anything of substance to the conversation; a comment made for the purpose of satisfying participation grade requirements.
-- Example Usage: (No example provided)
-
-## Respond:
-- Definition: Answer a previous question or make a decision based on a question.
-- Example Usage: In response to “okay should we start writing about it or should we find some quotes first and talk about them?” someone says, “find quotes first.”
-
-# Question types:
-## O-LOT:
-- Definition: Questions that are open-ended, but involve lower-order thinking.
-- Example Usage: So when you read this, what did you think?
-
-## C-LOT:
-- Definition: Questions that are closed-ended, lower-order. thinkingi--that is, questions for which there is an answer in mind.
-- Example Usage: Are we supposed to write out answer in the text box below?
-
 # Example Input/Outputs for your output in this task.
-
 ## Example 1:
 ### Input:
  - Topic: The book "The lady or the tiger" by Frank R. Stockton
@@ -111,10 +65,7 @@ I mean I think it states that the king does love the daughter at  some point tho
 ```json
 {
     "intent": "Social",
-    "uptake": "NONE",
-    "question_type": "NONE",
-    "rationale": "The message Hello. classifies as a social interaccion. There is no uptake identified in the message. Hello is not a question"
-
+    "rationale": "The message Hello. classifies as a social interaccion."
 }
 ```
 ## Example 2:
@@ -126,10 +77,8 @@ I mean I think it states that the king does love the daughter at  some point tho
 ### Output:
 ```json
 {
-    "intent": "Social, Procedure",
-    "uptake": "Affirm",
-    "question_type": "NONE",
-    "rationale": "The message "Looks good! I guess we can complete the post survey and submit our assignment" relates to a social/procedure intent. Uptake for the message would be Affirm since something is being affirmed. No question was asked."
+    "intent": "Procedure",
+    "rationale": "The message "Looks good! I guess we can complete the post survey and submit our assignment" relates to a procedure intent because is talking about submitting."
 }
 ```
 ## Example 3:
@@ -142,25 +91,17 @@ I mean I think it states that the king does love the daughter at  some point tho
 ```json
 {
     "intent": "Procedure",
-    "uptake": "Clarify",
-    "question_type": "C-LOT",
-    "rationale": "The message "How much longer would you like to wait for Julie before we begin? 5 more minutes?" has a procedure content. The uptake will be clarified since it is asking a clarifying question. There is a question in the message classified as C-LOT because it is not related to the topic."
+    "rationale": "The message "How much longer would you like to wait for Julie before we begin? 5 more minutes?" has a procedure content."
 }
 ```
 
 # Classification
-Task: Given the Topic, Context and Message, classify the message with an appropriate Intent Class, Uptake Class, and Question Type Class. 
+Task: Given the Topic, Context and Message, classify the message with an appropriate Class. 
 
-Remember, your task is to only classify the given message. Here are the possible classes:
-Intent Classes:
- - UX, Social, Procedure, Deliberation, Seminar, Imaginative entry, Disciplinary, Other.
-Uptake Classes:
- - Affirm, Elaborate, Clarify, Disagree, Prompt, Filler, Respond.
-Question Type Classes:
- - O-LOT, C-LOT
+Remember, your task is to only classify the given message. Here are the possible classes: UX, Social, Procedure, Deliberation, Seminar, Imaginative entry, Disciplinary, Other.
 
 Please classify the following message and nothing else to get points: 
 ## Input:
- - Topic: The book "The lady or the tiger" by Frank R. Stockton.
+ - Topic: $TOPIC$
  - Context: $CONTEXT$
  - Message: "$MESSAGE$"'''

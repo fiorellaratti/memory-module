@@ -4,6 +4,7 @@ You can think of this task as the function Importance( Observation O | Query Q )
 The prior is what is given i.e. information we already know to be true, 
 the query is potentially related the the prior. The importance of the query depends on how important knowing the prior is for my particular query. 
 
+Examples for your task:
 O: You are brushing your teeth.
 Q: What are you looking forward to the most for right now?
 I: 2
@@ -19,7 +20,7 @@ Q: {[6] Question: Part 1: What happens next? What is behind the door, the lady o
 I: 9.5
 Rationale: By the index and the Pseudonym you can assume this two mesages were sent in order by the same person and therefore "Her lover would die and never love another." its a continuation of "I loved the addition of " which makes knowing the prior really important for the query.
 ...
-Now, give the following Observation O and Query an importance value based on the definitions and examples above. Please only output the importance in the form of "I: (importance value)" if you want to get points. If you do any other way, you will not get any points.
+Now, give the following Observation O and Query an importance value based on the definitions and examples above. Please only output the importance in the form of "I: (importance value)" if you want to get points. If you do it any other way, you will not get any points.
 
 O: $OBSERVATION$
 Q: $QUERY$
